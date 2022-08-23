@@ -160,16 +160,18 @@ void setup() {
   SPI.setDataMode(SPI_MODE0);     // CPHA = 0  Clock positive
   SPI.setBitOrder(MSBFIRST);           
 
-  //delay(1000);
-  // Serial.println("start-0");
+  delay(100);
+
   SetFrequencyADF4351(40.0);     //40 MHz Startwert
   SetPowerADF4351(5);
-  // Serial.println("start-1");
+ 
   delay(2000);
   SetFrequencyADF4351(40.0);     //40 MHz Startwert
   SetPowerADF4351(5);
+
   delay(3000);
-  // Serial.println("start-2");
+  SetFrequencyADF4351(40.0);     //40 MHz Startwert
+  SetPowerADF4351(5);
 
   // ACHTUNG: Mit aktivem Sleepmde ist eine Einstellung der Parameter über den UART
   // im laufenden Betrieb NICHT möglich
