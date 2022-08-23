@@ -5,7 +5,7 @@ Der Pluto SDR benötigt eine 40 MHz Referenz, der LNA 25 MHz.
 ALs GPS wird eine leobodnar GPSDO mit 25 MHz Ausgang verwendet.
 Die Erzeugung der 40 MHz erfolgt mit einem ADF4351 PLL-Oszillator.
 
-Installierte Software:
+Installierte Software:<br>
 VS Code mit plattformIO<br>
 Arduino IDE
 
