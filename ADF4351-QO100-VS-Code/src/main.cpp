@@ -171,8 +171,8 @@ void setup() {
   delay(3000);
   // Serial.println("start-2");
 
-  // ACHTUNG: Mit aktivem Sleepmde ist eine Einstellung der Parameter 
-  // im laufenden BEtrieb NICHT möglich
+  // ACHTUNG: Mit aktivem Sleepmde ist eine Einstellung der Parameter über den UART
+  // im laufenden Betrieb NICHT möglich
   // SLEEP_MODE Konstanten: SLEEP_MODE_IDLE, SLEEP_MODE_ADC, SLEEP_MODE_PWR_SAVE, SLEEP_MODE_STANDBY, SLEEP_MODE_PWR_DOWN)
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);  
   sleep_enable();  
