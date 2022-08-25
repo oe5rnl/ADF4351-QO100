@@ -31,6 +31,9 @@
 #include <avr/sleep.h>
 #define LE 3 // Load Enable Pin 3
 
+#define QRG 40.0
+#define PWR 5
+
                                   // die 6 Register einfach für 500 MHz mit einem 25 MHz Quarz vorbelegen
 uint32_t registers[6]={0x500000, 0x8011, 0x4E42, 0x04B3, 0xBC802C, 0x580005};
 byte RFDivider;                   // Ausgangs-Frequenzteiler
@@ -144,7 +147,9 @@ void SetFrequencyADF4351(double FreqMHz) {
   bitSet (registers[2], 27);                  // Digital Lock Detect ist 110 
   bitClear (registers[2], 26); 
   WriteRegADF();
-  while(digitalRead(lockdetect)==0) {}        // warten bis lock detect erkannt wird
+  
+  while(digitalRead(lockdetect)==0) {}        // warten bis lock detect 1 wird
+
 }
 
 
@@ -160,82 +165,28 @@ void setup() {
   SPI.setDataMode(SPI_MODE0);     // CPHA = 0  Clock positive
   SPI.setBitOrder(MSBFIRST);           
 
-  delay(1000);
+  delay(200);
 
-  SetFrequencyADF4351(40.0);     //40 MHz Startwert
-  SetPowerADF4351(5);
+  SetFrequencyADF4351(QRG);    
+  SetPowerADF4351(PWR);
  
   delay(2000);
-  SetFrequencyADF4351(40.0);     //40 MHz Startwert
-  SetPowerADF4351(5);
+  SetFrequencyADF4351(QRG);    
+  SetPowerADF4351(PWR);
 
   delay(3000);
-  SetFrequencyADF4351(40.0);     //40 MHz Startwert
-  SetPowerADF4351(5);
-
-  // ACHTUNG: Mit aktivem Sleepmde ist eine Einstellung der Parameter über den UART
-  // im laufenden Betrieb NICHT möglich
-  // SLEEP_MODE Konstanten: SLEEP_MODE_IDLE, SLEEP_MODE_ADC, SLEEP_MODE_PWR_SAVE, SLEEP_MODE_STANDBY, SLEEP_MODE_PWR_DOWN)
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);  
-  sleep_enable();  
-  sleep_mode();  
-  // Nach dem Aufwachen kommt mormalerweise ein sleep_disable();     
+  SetFrequencyADF4351(QRG);    
+  SetPowerADF4351(PWR);
+   
 }
 
 void loop() {
-  int ser, len, p;
-  char buf[10];
-  double freq;
 
-  if (Serial.available() > 0) {
-    ser = Serial.read();
-    if(ser == 'h') {                          // Hilfe Text ausgeben
-      Serial.println("Help");
-      Serial.println(" f: set frequency 34...4400 MHz. Examples: f1000 | f300.35 | f 2000 | f99.99 ");
-      Serial.println(" g: get frequency");
-      Serial.println(" p: set output power (dBm). Allowed values are: p-4 | p-1 | p2 | p5");
-      Serial.println(" o: get output Power");
-      Serial.println(" d: device class");
-      Serial.println(" w: who");
-      Serial.println(" v: version");
-      Serial.println(" 1: min. frequency");
-      Serial.println(" 2: max. frequency");
-      Serial.println(" 3: min. power");
-      Serial.println(" 4: max. power");
-      Serial.println(" 5: power step width");
-    }  
-    if(ser == 'd') Serial.println("Sythesizer"); // device ?
-    if(ser == 'w') Serial.println("ADF4351"); // who ?
-    if(ser == 'v') Serial.println("1.0");     // version ?
-    if(ser == '1') Serial.println("35000000"); // 35 MHz fmin
-    if(ser == '2') Serial.println("4400000000"); // 4.4 GHz fmax
-    if(ser == '3') Serial.println("-4");      // -4  dB Pout min.
-    if(ser == '4') Serial.println("5");       // +5 dB Pout max.
-    if(ser == '5') Serial.println("3");       // Pout step
-    if(ser == 'o') Serial.println(RFpower);   // Ausgangsleistung in dBm
-    if(ser == 'g') Serial.println(RFout);     // Frequenz in MHz
-    if(ser == 'f') {                          // Frequenz einstellen: f437 | f 1000
-      Serial.setTimeout(15);
-      len = Serial.readBytes(buf,12);
-      if((len>2) && (len<11)) {               // f und was dahinter ?
-        freq = atof (buf);
-        if((freq >= 34.0) && (freq <= 4400.0)) {
-          SetFrequencyADF4351(freq);
-        }
-      }
-    }
-    if(ser == 'p') {                          // Ausgangsleistung einstellen : p-4 | p-1 | p2 | p5
-      Serial.setTimeout(15);
-      len = Serial.readBytes(buf,8);
-      //Serial.println(len);
-      if((len>2) && (len<6)) {                // p und was dahinter ?
-        p = atoi (buf);
-        if(p==-4) {RFpower=-4; SetPowerADF4351(RFpower);}
-        if(p==-1) {RFpower=-1; SetPowerADF4351(RFpower);}
-        if(p==2) {RFpower=2; SetPowerADF4351(RFpower);}
-        if(p==5) {RFpower=5; SetPowerADF4351(RFpower);}
-      }  
-    }
-    Serial.setTimeout(500);  
+  if (digitalRead(lockdetect)==0) {
+    delay(1000);
+    SetFrequencyADF4351(QRG);    
+    SetPowerADF4351(PWR);
   }
+  delay(1000);
+
 }
