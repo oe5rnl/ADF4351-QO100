@@ -156,8 +156,6 @@ void SetFrequencyADF4351(double FreqMHz) {
 void setup() {
   Serial.begin (38400); 
 
- // Serial.println("start");
-
   pinMode(lockdetect, INPUT);     // MUX Eingang für lock detect
   pinMode(LE, OUTPUT);            // Load Enable Pin
   digitalWrite(LE, HIGH);
@@ -166,15 +164,6 @@ void setup() {
   SPI.setBitOrder(MSBFIRST);           
 
   delay(200);
-
-  SetFrequencyADF4351(QRG);    
-  SetPowerADF4351(PWR);
- 
-  delay(2000);
-  SetFrequencyADF4351(QRG);    
-  SetPowerADF4351(PWR);
-
-  delay(3000);
   SetFrequencyADF4351(QRG);    
   SetPowerADF4351(PWR);
    
@@ -183,10 +172,8 @@ void setup() {
 void loop() {
 
   if (digitalRead(lockdetect)==0) {
-    delay(1000);
-    SetFrequencyADF4351(QRG);    
-    SetPowerADF4351(PWR);
+    SetFrequencyADF4351(QRG); 
+    SetPowerADF4351(PWR);     
   }
   delay(1000);
-
 }
