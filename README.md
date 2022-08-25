@@ -11,7 +11,7 @@ Arduino IDE
 
 Detailbeschreibung im Ordner Manual.
 <br><br>
-Das Projekt zur Ansteuerung der PLL basiert auf die Veröffentlichung von Matthias Busse.
+Das Projekt zur Ansteuerung der PLL basiert auf der Veröffentlichung von Matthias Busse.
 <br>
 
 http://shelvin.de/den-adf4351-frequenzgenerator-35mhz-bis-44ghz-vom-arduino-uno-ansteuern/
