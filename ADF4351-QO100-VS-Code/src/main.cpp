@@ -160,7 +160,7 @@ void setup() {
   SPI.setDataMode(SPI_MODE0);     // CPHA = 0  Clock positive
   SPI.setBitOrder(MSBFIRST);           
 
-  delay(100);
+  delay(1000);
 
   SetFrequencyADF4351(40.0);     //40 MHz Startwert
   SetPowerADF4351(5);
